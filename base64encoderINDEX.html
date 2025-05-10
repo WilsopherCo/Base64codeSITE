@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 Encoder/Decoder</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: var(--gray-900);
+            background-color: var(--gray-50);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--gray-900);
+        }
+        
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--gray-700);
+            margin-bottom: 1.5rem;
+        }
+        
+        .app {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--gray-200);
+        }
+        
+        .tab {
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+        
+        .tab:hover {
+            color: var(--primary);
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+        
+        .input-group, .output-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--gray-800);
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 0.75rem;
+            border: 2px solid var(--gray-300);
+            border-radius: 0.5rem;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .control-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            font-weight: 600;
+            color: white;
+            background-color: var(--primary);
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        .btn-secondary {
+            color: var(--gray-700);
+            background-color: var(--gray-200);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--gray-300);
+        }
+        
+        .btn-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            padding: 0;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+        
+        input[type="radio"] {
+            cursor: pointer;
+        }
+        
+        .options {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .option-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        input[type="checkbox"] {
+            cursor: pointer;
+            width: 1rem;
+            height: 1rem;
+        }
+        
+        .spacer {
+            flex-grow: 1;
+        }
+        
+        .info {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+        
+        .status {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            background-color: var(--gray-100);
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+        
+        .success {
+            background-color: #ecfdf5;
+            color: #065f46;
+        }
+        
+        .error {
+            background-color: #fef2f2;
+            color: #b91c1c;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .feature {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        
+        .feature-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: var(--gray-800);
+        }
+        
+        .feature-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 0.5rem;
+        }
+        
+        .feature-desc {
+            color: var(--gray-700);
+            font-size: 0.95rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .control-group {
+                justify-content: flex-start;
+            }
+            
+            .tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Ultimate Base64 Encoder/Decoder</h1>
+            <p class="subtitle">A modern, powerful tool to encode and decode Base64 data</p>
+        </header>
+        
+        <main>
+            <div class="app">
+                <div class="tabs">
+                    <div class="tab active" id="tab-encode">Encode</div>
+                    <div class="tab" id="tab-decode">Decode</div>
+                </div>
+                
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="input-type" value="text" checked>
+                        <span>Text</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="input-type" value="file">
+                        <span>File</span>
+                    </label>
+                </div>
+                
+                <div class="input-group">
+                    <label for="input">Input:</label>
+                    <textarea id="input" placeholder="Enter text to encode or decode"></textarea>
+                    <input type="file" id="file-input" class="file-input">
+                    <div class="info file-info" style="display: none;">No file selected</div>
+                </div>
+                
+                <div class="controls">
+                    <button id="process-btn" class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M7 21l7.9-7.9c.4-.4.4-1 0-1.4L7 4"></path>
+                        </svg>
+                        <span id="process-text">Encode</span>
+                    </button>
+                    
+                    <button id="clear-btn" class="btn btn-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"></path>
+                            <line x1="18" y1="9" x2="12" y2="15"></line>
+                            <line x1="12" y1="9" x2="18" y2="15"></line>
+                        </svg>
+                        <span>Clear</span>
+                    </button>
+                    
+                    <div class="spacer"></div>
+                    
+                    <div class="control-group" id="file-controls" style="display: none;">
+                        <button id="select-file-btn" class="btn btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="12" y1="18" x2="12" y2="12"></line>
+                                <line x1="9" y1="15" x2="15" y2="15"></line>
+                            </svg>
+                            <span>Select File</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="options">
+                    <div class="option-group">
+                        <input type="checkbox" id="url-safe" checked>
+                        <label for="url-safe">URL-safe (use - and _ instead of + and /)</label>
+                    </div>
+                    
+                    <div class="option-group" id="padding-option">
+                        <input type="checkbox" id="padding" checked>
+                        <label for="padding">Include padding (=)</label>
+                    </div>
+                </div>
+                
+                <div class="output-group">
+                    <label for="output">Output:</label>
+                    <textarea id="output" readonly></textarea>
+                </div>
+                
+                <div class="controls">
+                    <button id="copy-btn" class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span>Copy to Clipboard</span>
+                    </button>
+                    
+                    <button id="download-btn" class="btn btn-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>Download Result</span>
+                    </button>
+                    
+                    <div class="spacer"></div>
+                    
+                    <button id="swap-btn" class="btn btn-secondary btn-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="3" x2="12" y2="21"></line>
+                            <polyline points="19 10 12 3 5 10"></polyline>
+                            <polyline points="5 14 12 21 19 14"></polyline>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div id="status-message" class="status" style="display: none;"></div>
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <h3 class="feature-title">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                            </svg>
+                        </div>
+                        Fast Conversion
+                    </h3>
+                    <p class="feature-desc">
+                        Process text and files instantly with client-side computation. No server delays, no data sent to remote servers, ensuring your privacy.
+                    </p>
+                </div>
+                
+                <div class="feature">
+                    <h3 class="feature-title">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                        </div>
+                        Advanced Options
+                    </h3>
+                    <p class="feature-desc">
+                        Control URL-safe characters, padding, line breaks, and encoding formats to suit your specific needs for every project.
+                    </p>
+                </div>
+                
+                <div class="feature">
+                    <h3 class="feature-title">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                        </div>
+                        File Support
+                    </h3>
+                    <p class="feature-desc">
+                        Encode and decode files of any type, including images, documents, and binary data with streamlined file handling.
+                    </p>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 Ultimate Base64 Tool | All rights reserved</p>
+        </footer>
+    </div>
+    
+    <script>
+        // DOM Elements
+        const encodeTab = document.getElementById('tab-encode');
+        const decodeTab = document.getElementById('tab-decode');
+        const inputTextarea = document.getElementById('input');
+        const outputTextarea = document.getElementById('output');
+        const processBtn = document.getElementById('process-btn');
+        const processText = document.getElementById('process-text');
+        const clearBtn = document.getElementById('clear-btn');
+        const copyBtn = document.getElementById('copy-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const swapBtn = document.getElementById('swap-btn');
+        const statusMessage = document.getElementById('status-message');
+        const urlSafeCheckbox = document.getElementById('url-safe');
+        const paddingCheckbox = document.getElementById('padding');
+        const paddingOption = document.getElementById('padding-option');
+        const fileInput = document.getElementById('file-input');
+        const fileInfo = document.querySelector('.file-info');
+        const fileControls = document.getElementById('file-controls');
+        const selectFileBtn = document.getElementById('select-file-btn');
+        const inputTypeRadios = document.querySelectorAll('input[name="input-type"]');
+
+        // State
+        let mode = 'encode'; // 'encode' or 'decode'
+        let inputType = 'text'; // 'text' or 'file'
+        let fileData = null;
+        let fileName = '';
+
+        // Initialize
+        function init() {
+            updateUIForMode();
+            addEventListeners();
+        }
+
+        // Event Listeners
+        function addEventListeners() {
+            // Tab switching
+            encodeTab.addEventListener('click', () => {
+                mode = 'encode';
+                updateUIForMode();
+            });
+            
+            decodeTab.addEventListener('click', () => {
+                mode = 'decode';
+                updateUIForMode();
+            });
+            
+            // Process button
+            processBtn.addEventListener('click', processData);
+            
+            // Clear button
+            clearBtn.addEventListener('click', () => {
+                inputTextarea.value = '';
+                outputTextarea.value = '';
+                fileData = null;
+                fileName = '';
+                fileInfo.textContent = 'No file selected';
+                hideStatus();
+            });
+            
+            // Copy button
+            copyBtn.addEventListener('click', () => {
+                if (outputTextarea.value) {
+                    navigator.clipboard.writeText(outputTextarea.value)
+                        .then(() => showStatus('Copied to clipboard!', 'success'))
+                        .catch(() => showStatus('Failed to copy to clipboard', 'error'));
+                }
+            });
+            
+            // Download button
+            downloadBtn.addEventListener('click', downloadResult);
+            
+            // Swap button
+            swapBtn.addEventListener('click', () => {
+                if (outputTextarea.value) {
+                    inputTextarea.value = outputTextarea.value;
+                    outputTextarea.value = '';
+                    
+                    // Also swap mode
+                    mode = mode === 'encode' ? 'decode' : 'encode';
+                    updateUIForMode();
+                }
+            });
+            
+            // Input type radio buttons
+            inputTypeRadios.forEach(radio => {
+                radio.addEventListener('change', e => {
+                    inputType = e.target.value;
+                    updateUIForInputType();
+                });
+            });
+            
+            // File input
+            fileInput.addEventListener('change', handleFileSelection);
+            
+            // Select file button
+            selectFileBtn.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            // Input live processing
+            inputTextarea.addEventListener('input', debounce(() => {
+                if (inputTextarea.value.length > 0) {
+                    processData();
+                }
+            }, 500));
+        }
+
+        // Update UI based on mode (encode/decode)
+        function updateUIForMode() {
+            if (mode === 'encode') {
+                encodeTab.classList.add('active');
+                decodeTab.classList.remove('active');
+                processText.textContent = 'Encode';
+                paddingOption.style.display = 'flex';
+            } else {
+                encodeTab.classList.remove('active');
+                decodeTab.classList.add('active');
+                processText.textContent = 'Decode';
+                paddingOption.style.display = 'none';
+            }
+        }
+
+        // Update UI based on input type (text/file)
+        function updateUIForInputType() {
+            if (inputType === 'text') {
+                inputTextarea.style.display = 'block';
+                fileControls.style.display = 'none';
+                fileInfo.style.display = 'none';
+            } else {
+                inputTextarea.style.display = 'none';
+                fileControls.style.display = 'flex';
+                fileInfo.style.display = 'block';
+            }
+        }
+
+        // Handle file selection
+        function handleFileSelection(e) {
+            const file = e.target.files[0];
+            if (file) {
+                fileName = file.name;
+                fileInfo.textContent = `Selected file: ${fileName} (${formatFileSize(file.size)})`;
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    fileData = event.target.result;
+                    processData();
+                };
+                
+                if (mode === 'encode') {
+                    reader.readAsArrayBuffer(file);
+                } else {
+                    reader.readAsText(file);
+                }
+            }
+        }
+
+        // Format file size
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' bytes';
+            else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+            else return (bytes / 1048576).toFixed(1) + ' MB';
+        }
+
+        // Process data (encode or decode)
+        function processData() {
+            try {
+                hideStatus();
+                
+                if (mode === 'encode') {
+                    encodeData();
+                } else {
+                    decodeData();
+                }
+            } catch (error) {
+                showStatus(`Error: ${error.message}`, 'error');
+                outputTextarea.value = '';
+            }
+        }
+
+        // Encode data
+        function encodeData() {
+            let inputData;
+            
+            if (inputType === 'file' && fileData) {
+                // Handle file data
+                inputData = new Uint8Array(fileData);
+                
+                // Convert to base64
+                let base64 = arrayBufferToBase64(inputData);
+                
+                // Apply URL-safe option if needed
+                if (urlSafeCheckbox.checked) {
+                    base64 = base64.replace(/\+/g, '-').replace(/\//g, '_');
+                }
+                
+                // Remove padding if needed
+                if (!paddingCheckbox.checked) {
+                    base64 = base64.replace(/=/g, '');
+                }
+                
+                outputTextarea.value = base64;
+            } else if (inputType === 'text' && inputTextarea.value) {
+                // Handle text data
+                const text = inputTextarea.value;
+                
+                // Convert string to ArrayBuffer
+                const encoder = new TextEncoder();
+                const data = encoder.encode(text);
+                
+                // Convert to base64
+                let base64 = arrayBufferToBase64(data);
+                
+                // Apply URL-safe option if needed
+                if (urlSafeCheckbox.checked) {
+                    base64 = base64.replace(/\+/g, '-').replace(/\//g, '_');
+                }
+                
+                // Remove padding if needed
+                if (!paddingCheckbox.checked) {
+                    base64 = base64.replace(/=/g, '');
+                }
+                
+                outputTextarea.value = base64;
+            }
+        }
+
+        // Decode data
+        function decodeData() {
+            let inputData;
+            
+            if (inputType === 'file' && fileData) {
+                // Handle file data
+                inputData = fileData;
+            } else if (inputType === 'text' && inputTextarea.value) {
+                // Handle text data
+                inputData = inputTextarea.value;
+            } else {
+                return;
+            }
+            
+            // Process input data - remove whitespace
+            let base64 = inputData.trim().replace(/\s/g, '');
+            
+            // Handle URL-safe characters
+            if (urlSafeCheckbox.checked) {
+                base64 = base64.replace(/-/g, '+').replace(/_/g, '/');
+            }
+            
+            // Add padding if missing
+            while (base64.length % 4 !== 0) {
+                base64 += '=';
+            }
+            
+            try {
+                // Try to decode as text first
+                const binary = atob(base64);
+                const bytes = new Uint8Array(binary.length);
+                
+                for (let i = 0; i < binary.length; i++) {
+                    bytes[i] = binary.charCodeAt(i);
+                }
+                
+                // Try to convert to text
+                try {
+                    const decoder = new TextDecoder('utf-8', { fatal: false });
+                    const text = decoder.decode(bytes);
+                    outputTextarea.value = text;
+                } catch (e) {
+                    // If it fails, it's likely binary data
+                    outputTextarea.value = '[Binary data decoded. Use the Download button to save the result.]';
+                    
+                    // Store binary data for download
+                    fileData = bytes.buffer;
+                    fileName = 'decoded_file';
+                }
+                
+            } catch (e) {
+                console.error("Decoding error:", e);
+                throw new Error('Invalid Base64 data');
+            }
+        }
+
+        // Convert ArrayBuffer to base64
+        function arrayBufferToBase64(buffer) {
+            let binary = '';
+            const bytes = new Uint8Array(buffer);
+            const len = bytes.byteLength;
+            
+            for (let i = 0; i < len; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            
+            return btoa(binary);
+        }
+
+        // Download result
+        function downloadResult() {
+            if (!outputTextarea.value) return;
+            
+            const link = document.createElement('a');
+            
+            if (mode === 'encode') {
+                // Download as text file
+                const blob = new Blob([outputTextarea.value], { type: 'text/plain' });
+                link.href = URL.createObjectURL(blob);
+                link.download = 'encoded_base64.txt';
+            } else {
+                // For decoded data, check if we have binary data
+                if (fileData) {
+                    const blob = new Blob([new Uint8Array(fileData)]);
+                    link.href = URL.createObjectURL(blob);
+                    link.download = fileName || 'decoded_file';
+                } else {
+                    // Plain text
+                    const blob = new Blob([outputTextarea.value], { type: 'text/plain' });
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'decoded_text.txt';
+                }
+            }
+            
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+
+        // Show status message
+        function showStatus(message, type = '') {
+            statusMessage.textContent = message;
+            statusMessage.style.display = 'block';
+            
+            // Clear previous classes
+            statusMessage.classList.remove('success', 'error');
+            
+            if (type) {
+                statusMessage.classList.add(type);
+            }
+            
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                hideStatus();
+            }, 3000);
+        }
+
+        // Hide status message
+        function hideStatus() {
+            statusMessage.style.display = 'none';
+        }
+
+        // Debounce function
+        function debounce(func, wait) {
+            let timeout;
+            return function() {
+                const context = this;
+                const args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(context, args), wait);
+            };
+        }
+
+        // Start the app
+        init();
+    </script>
+</body>
+</html>
