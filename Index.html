@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-D5Q91V8KCM"></script>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-D5Q91V8KCM"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -10,10 +11,10 @@
 
   gtag('config', 'G-D5Q91V8KCM');
 </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Base64 Encoder/Decoder</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Base64 Encoder/Decoder</title>
+<style>
         :root {
             --primary: #4f46e5;
             --primary-hover: #4338ca;
@@ -304,180 +305,219 @@
                 padding-bottom: 0.25rem;
             }
         }
-    </style>
+    
+.heading-box {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem 1.5rem;
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.heading-box h2,
+.heading-box h3 {
+  margin: 0;
+  padding: 0;
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Base64 Converter: Encode and Decode Data with Ease</h1>
-            <p class="subtitle">- Input field for binary information, encoded string, or text data. <br>
-- Output data displayed with decode button for easy access.<br>
+<div class="container">
+<header>
+<h1>Base64 Converter: Encode and Decode Data with Ease</h1>
+<p class="subtitle">- Input field for binary information, encoded string, or text data. <br/>
+- Output data displayed with decode button for easy access.<br/>
 - Displays line numbers and file size for detailed results.</p>
-        </header>
-        
-        <main>
-            <div class="app">
-                <div class="tabs">
-                    <div class="tab active" id="tab-encode">Encode</div>
-                    <div class="tab" id="tab-decode">Decode</div>
-                </div>
-                
-                <div class="radio-group">
-                    <label class="radio-label">
-                        <input type="radio" name="input-type" value="text" checked>
-                        <span>Text</span>
-                    </label>
-                    <label class="radio-label">
-                        <input type="radio" name="input-type" value="file">
-                        <span>File</span>
-                    </label>
-                </div>
-                
-                <div class="input-group">
-                    <label for="input">Input:</label>
-                    <textarea id="input" placeholder="Enter text to encode or decode"></textarea>
-                    <input type="file" id="file-input" class="file-input">
-                    <div class="info file-info" style="display: none;">No file selected</div>
-                </div>
-                
-                <div class="controls">
-                    <button id="process-btn" class="btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M7 21l7.9-7.9c.4-.4.4-1 0-1.4L7 4"></path>
-                        </svg>
-                        <span id="process-text">Encode</span>
-                    </button>
-                    
-                    <button id="clear-btn" class="btn btn-secondary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"></path>
-                            <line x1="18" y1="9" x2="12" y2="15"></line>
-                            <line x1="12" y1="9" x2="18" y2="15"></line>
-                        </svg>
-                        <span>Clear</span>
-                    </button>
-                    
-                    <div class="spacer"></div>
-                    
-                    <div class="control-group" id="file-controls" style="display: none;">
-                        <button id="select-file-btn" class="btn btn-secondary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
-                                <line x1="12" y1="18" x2="12" y2="12"></line>
-                                <line x1="9" y1="15" x2="15" y2="15"></line>
-                            </svg>
-                            <span>Select File</span>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="options">
-                    <div class="option-group">
-                        <input type="checkbox" id="url-safe" checked>
-                        <label for="url-safe">URL-safe (use - and _ instead of + and /)</label>
-                    </div>
-                    
-                    <div class="option-group" id="padding-option">
-                        <input type="checkbox" id="padding" checked>
-                        <label for="padding">Include padding (=)</label>
-                    </div>
-                </div>
-                
-                <div class="output-group">
-                    <label for="output">Output:</label>
-                    <textarea id="output" readonly></textarea>
-                </div>
-                
-                <div class="controls">
-                    <button id="copy-btn" class="btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                        <span>Copy to Clipboard</span>
-                    </button>
-                    
-                    <button id="download-btn" class="btn btn-secondary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="7 10 12 15 17 10"></polyline>
-                            <line x1="12" y1="15" x2="12" y2="3"></line>
-                        </svg>
-                        <span>Download Result</span>
-                    </button>
-                    
-                    <div class="spacer"></div>
-                    
-                    <button id="swap-btn" class="btn btn-secondary btn-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="3" x2="12" y2="21"></line>
-                            <polyline points="19 10 12 3 5 10"></polyline>
-                            <polyline points="5 14 12 21 19 14"></polyline>
-                        </svg>
-                    </button>
-                </div>
-                
-                <div id="status-message" class="status" style="display: none;"></div>
-            </div>
-            
-            <div class="features">
-                <div class="feature">
-                    <h3 class="feature-title">
-                        <div class="feature-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                            </svg>
-                        </div>
+</header>
+<main>
+<div class="app">
+<div class="tabs">
+<div class="tab active" id="tab-encode">Encode</div>
+<div class="tab" id="tab-decode">Decode</div>
+</div>
+<div class="radio-group">
+<label class="radio-label">
+<input checked="" name="input-type" type="radio" value="text"/>
+<span>Text</span>
+</label>
+<label class="radio-label">
+<input name="input-type" type="radio" value="file"/>
+<span>File</span>
+</label>
+</div>
+<div class="input-group">
+<label for="input">Input:</label>
+<textarea id="input" placeholder="Enter text to encode or decode"></textarea>
+<input class="file-input" id="file-input" type="file"/>
+<div class="info file-info" style="display: none;">No file selected</div>
+</div>
+<div class="controls">
+<button class="btn" id="process-btn">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 21l7.9-7.9c.4-.4.4-1 0-1.4L7 4"></path>
+</svg>
+<span id="process-text">Encode</span>
+</button>
+<button class="btn btn-secondary" id="clear-btn">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"></path>
+<line x1="18" x2="12" y1="9" y2="15"></line>
+<line x1="12" x2="18" y1="9" y2="15"></line>
+</svg>
+<span>Clear</span>
+</button>
+<div class="spacer"></div>
+<div class="control-group" id="file-controls" style="display: none;">
+<button class="btn btn-secondary" id="select-file-btn">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+<polyline points="14 2 14 8 20 8"></polyline>
+<line x1="12" x2="12" y1="18" y2="12"></line>
+<line x1="9" x2="15" y1="15" y2="15"></line>
+</svg>
+<span>Select File</span>
+</button>
+</div>
+</div>
+<div class="options">
+<div class="option-group">
+<input checked="" id="url-safe" type="checkbox"/>
+<label for="url-safe">URL-safe (use - and _ instead of + and /)</label>
+</div>
+<div class="option-group" id="padding-option">
+<input checked="" id="padding" type="checkbox"/>
+<label for="padding">Include padding (=)</label>
+</div>
+</div>
+<div class="output-group">
+<label for="output">Output:</label>
+<textarea id="output" readonly=""></textarea>
+</div>
+<div class="controls">
+<button class="btn" id="copy-btn">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect>
+<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+</svg>
+<span>Copy to Clipboard</span>
+</button>
+<button class="btn btn-secondary" id="download-btn">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+<polyline points="7 10 12 15 17 10"></polyline>
+<line x1="12" x2="12" y1="15" y2="3"></line>
+</svg>
+<span>Download Result</span>
+</button>
+<div class="spacer"></div>
+<button class="btn btn-secondary btn-icon" id="swap-btn">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
+<line x1="12" x2="12" y1="3" y2="21"></line>
+<polyline points="19 10 12 3 5 10"></polyline>
+<polyline points="5 14 12 21 19 14"></polyline>
+</svg>
+</button>
+</div>
+<div class="status" id="status-message" style="display: none;"></div>
+</div>
+<div class="features">
+<div class="feature">
+<div class="heading-box"><h3 class="feature-title">
+<div class="feature-icon">
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+</svg>
+</div>
                         Fast Conversion
-                    </h3>
-                    <p class="feature-desc">
+                    </h3></div>
+<p class="feature-desc">
                         Process text and files instantly with client-side computation. No server delays, no data sent to remote servers, ensuring your privacy.
                     </p>
-                </div>
-                
-                <div class="feature">
-                    <h3 class="feature-title">
-                        <div class="feature-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="12" y1="16" x2="12" y2="12"></line>
-                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                            </svg>
-                        </div>
+</div>
+<div class="feature">
+<div class="heading-box"><h3 class="feature-title">
+<div class="feature-icon">
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+<circle cx="12" cy="12" r="10"></circle>
+<line x1="12" x2="12" y1="16" y2="12"></line>
+<line x1="12" x2="12.01" y1="8" y2="8"></line>
+</svg>
+</div>
                         Advanced Options
-                    </h3>
-                    <p class="feature-desc">
+                    </h3></div>
+<p class="feature-desc">
                         Control URL-safe characters, padding, line breaks, and encoding formats to suit your specific needs for every project.
                     </p>
-                </div>
-                
-                <div class="feature">
-                    <h3 class="feature-title">
-                        <div class="feature-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                <polyline points="14 2 14 8 20 8"></polyline>
-                                <line x1="16" y1="13" x2="8" y2="13"></line>
-                                <line x1="16" y1="17" x2="8" y2="17"></line>
-                                <polyline points="10 9 9 9 8 9"></polyline>
-                            </svg>
-                        </div>
+</div>
+<div class="feature">
+<div class="heading-box"><h3 class="feature-title">
+<div class="feature-icon">
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+<polyline points="14 2 14 8 20 8"></polyline>
+<line x1="16" x2="8" y1="13" y2="13"></line>
+<line x1="16" x2="8" y1="17" y2="17"></line>
+<polyline points="10 9 9 9 8 9"></polyline>
+</svg>
+</div>
                         File Support
-                    </h3>
-                    <p class="feature-desc">
+                    </h3></div>
+<p class="feature-desc">
                         Encode and decode files of any type, including images, documents, and binary data with streamlined file handling.
                     </p>
-                </div>
-            </div>
-        </main>
-        
-        <footer>
-            <p>&copy; 2025 Ultimate Base64 Tool | All rights reserved</p>
-        </footer>
-    </div>
-    
-    <script>
+</div>
+</div>
+<!-- New SEO Content Sections -->
+<div class="content-section">
+<div class="heading-box"><h2>What is a Base64 Converter?</h2></div>
+<p>A Base64 converter is an essential tool for developers and technical professionals who work with different data formats. This online utility allows you to quickly convert data between its raw binary form and Base64 encoded representation without any installation required.</p>
+<div class="heading-box"><h3>Understanding Base64 Encoding and Its Use Cases</h3></div>
+<ul>
+<li>Transforms binary data into a base64 string.</li>
+<li>Part of a subset of character encoding schemes like ASCII format.</li>
+<li>Used for mime-content transfer and basic authentication.</li>
+</ul>
+<p>Base64 encoding serves as a bridge between binary data and text-based systems. It takes raw binary information and represents it using a set of 64 printable characters that are universally recognized across different platforms and systems.</p>
+<div class="heading-box"><h3>Why Use a Base64 Converter?</h3></div>
+<ul>
+<li>Encode image files, binary files, and text data.</li>
+<li>Embed encoded values in HTML, CSS background, or img src.</li>
+<li>Ensure compatibility across file types like XML, JSON, and TSV.</li>
+</ul>
+<p>Our Base64 converter provides a seamless way to prepare data for transmission or storage in environments where binary data might otherwise cause issues. Whether you're working on web development, data transfer protocols, or system integration, having a reliable Base64 conversion tool at your fingertips streamlines your workflow.</p>
+</div>
+<div class="content-section">
+<div class="heading-box"><h2>How Does the Encoding Process Work</h2></div>
+<p>The Base64 encoding algorithm follows a systematic approach to transform binary data into readable text. First, it divides the input data into 6-bit groups, since 2^6 = 64, which provides the 64 different values needed for the encoding scheme. Each 6-bit value is then mapped to a corresponding printable character from the Base64 alphabet.</p>
+<p>When encoding, every 3 bytes (24 bits) of binary data are converted into 4 Base64 characters. If the input length is not divisible by 3, padding characters (=) are added to ensure proper alignment. This padding indicates to decoders that the original data length wasn't a multiple of 3 bytes.</p>
+<p>Our converter handles all these complexities automatically, providing options for URL-safe encoding (which replaces + and / with - and _) and padding control to suit different application requirements.</p>
+</div>
+<div class="content-section">
+<div class="heading-box"><h2>Applications for Developers and Professionals</h2></div>
+<p>Base64 encoding plays a crucial role in numerous development and technical scenarios. Understanding when and how to leverage this encoding can significantly optimize your projects and workflows.</p>
+<div class="heading-box"><h3>Streamlining Web Page Development</h3></div>
+<ul>
+<li>Embed encoded data directly in an HTML page for website speed.</li>
+<li>Use url encoder and url decoder for handling data URIs.</li>
+<li>Optimize http headers for faster browser support.</li>
+</ul>
+<p>Modern web development often requires embedding resources directly within HTML or CSS to reduce HTTP requests. Base64 encoding allows images, fonts, and other binary assets to be included inline, improving page load performance and reducing server calls.</p>
+<div class="heading-box"><h3>Additional Use Cases Across Industries</h3></div>
+<ul>
+<li>Electronic mail and multipurpose internet mail extensions.</li>
+<li>Generate ip address and ip generator data for information systems.</li>
+<li>Works as a virtual teacher for character encoding schemes.</li>
+</ul>
+<p>From email systems that need to transmit binary attachments to database storage optimizations, Base64's versatility makes it an essential tool across various technical domains. Our converter simplifies these operations with a clean, intuitive interface that works directly in your browser.</p>
+</div>
+</main>
+<footer>
+<p>© 2025 Ultimate Base64 Tool | All rights reserved</p>
+</footer>
+</div>
+<script>
         // DOM Elements
         const encodeTab = document.getElementById('tab-encode');
         const decodeTab = document.getElementById('tab-decode');
