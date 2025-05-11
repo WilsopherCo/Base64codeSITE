@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -14,6 +13,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Base64 Encoder/Decoder</title>
+<!-- Added Google Fonts for the new header -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
 <style>
         :root {
             --primary: #4f46e5;
@@ -325,16 +326,166 @@
 .content-section ul {
   padding-left: 2rem;
 }
+
+/* New Header Styles */
+.site-header {
+    background-color: #8cb8e8; /* Slightly darker than #a0d0ff */
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    color: #333;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 10px 16px;
+    border-radius: 5px;
+    transition: all 0.2s;
+    letter-spacing: 0.2px;
+}
+
+.nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.language-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-button {
+    background: none;
+    border: none;
+    color: #333;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 10px 16px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+    letter-spacing: 0.2px;
+}
+
+.dropdown-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 120px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 4px;
+    right: 0;
+}
+
+.dropdown-content a {
+    color: #333;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.2s;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.language-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.arrow-down {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #333;
+    margin-left: 5px;
+}
+
+/* Updated container padding to accommodate new header */
+.container {
+    padding-top: 1rem;
+}
+
+@media (max-width: 768px) {
+    .site-header {
+        flex-direction: column;
+        padding: 15px 20px;
+    }
+    
+    .nav-buttons {
+        margin-top: 15px;
+        width: 100%;
+        justify-content: center;
+    }
+}
 </style>
 </head>
 <body>
+<!-- New Header -->
+<header class="site-header">
+    <a href="/" class="logo">Base64Converter.org</a>
+    
+    <div class="nav-buttons">
+        <button class="nav-button">About</button>
+        <button class="nav-button">FAQ</button>
+        
+        <div class="language-dropdown">
+            <button class="dropdown-button">
+                English
+                <div class="arrow-down"></div>
+            </button>
+            <div class="dropdown-content">
+                <a href="#">English</a>
+                <a href="#">Español</a>
+                <a href="#">Français</a>
+                <a href="#">Deutsch</a>
+                <a href="#">中文</a>
+            </div>
+        </div>
+    </div>
+</header>
+
 <div class="container">
-<header>
+<!-- Original header content is changed to a regular div since we have a new header -->
+<div>
 <h1>Base64 Converter: Encode and Decode Data with Ease</h1>
 <p class="subtitle">- Input field for binary information, encoded string, or text data. <br/>
 - Output data displayed with decode button for easy access.<br/>
 - Displays line numbers and file size for detailed results.</p>
-</header>
+</div>
 <main>
 <div class="app">
 <div class="tabs">
