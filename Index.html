@@ -1,1041 +1,1122 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <meta name="description" content="Fast and secure Base64 encoder and decoder. Convert text and files to and from Base64 instantly—100% client-side, no data sent to servers.">
-
-<!-- Google tag (gtag.js) -->
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-D5Q91V8KCM"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-D5Q91V8KCM');
-</script>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Base64 Encoder/Decoder</title>
-<!-- Added Google Fonts for the new header -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
-<style>
-        :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            line-height: 1.6;
-            color: var(--gray-900);
-            background-color: #a0d0ff;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            color: var(--gray-900);
-        }
-        
-        .subtitle {
-            font-size: 1.25rem;
-            color: var(--gray-700);
-            margin-bottom: 1.5rem;
-        }
-        
-        .app {
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .tabs {
-            display: flex;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid var(--gray-200);
-        }
-        
-        .tab {
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
-            color: var(--gray-700);
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            margin-bottom: -2px;
-            transition: all 0.2s;
-        }
-        
-        .tab:hover {
-            color: var(--primary);
-        }
-        
-        .tab.active {
-            color: var(--primary);
-            border-bottom: 2px solid var(--primary);
-        }
-        
-        .input-group, .output-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--gray-800);
-        }
-        
-        textarea {
-            width: 100%;
-            min-height: 150px;
-            padding: 0.75rem;
-            border: 2px solid var(--gray-300);
-            border-radius: 0.5rem;
-            resize: vertical;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: border-color 0.2s;
-        }
-        
-        textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
-        }
-        
-        .controls {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-        
-        .control-group {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-        
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.625rem 1.25rem;
-            font-weight: 600;
-            color: white;
-            background-color: var(--primary);
-            border: none;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        
-        .btn:hover {
-            background-color: var(--primary-hover);
-        }
-        
-        .btn-secondary {
-            color: var(--gray-700);
-            background-color: var(--gray-200);
-        }
-        
-        .btn-secondary:hover {
-            background-color: var(--gray-300);
-        }
-        
-        .btn-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 2.5rem;
-            height: 2.5rem;
-            padding: 0;
-        }
-        
-        .file-input {
-            display: none;
-        }
-        
-        .radio-group {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .radio-label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-        }
-        
-        input[type="radio"] {
-            cursor: pointer;
-        }
-        
-        .options {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-        
-        .option-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        input[type="checkbox"] {
-            cursor: pointer;
-            width: 1rem;
-            height: 1rem;
-        }
-        
-        .spacer {
-            flex-grow: 1;
-        }
-        
-        .info {
-            margin-top: 0.5rem;
-            font-size: 0.875rem;
-            color: var(--gray-700);
-        }
-        
-        .status {
-            margin-top: 1rem;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            background-color: var(--gray-100);
-            font-size: 0.875rem;
-            color: var(--gray-700);
-        }
-        
-        .success {
-            background-color: #ecfdf5;
-            color: #065f46;
-        }
-        
-        .error {
-            background-color: #fef2f2;
-            color: #b91c1c;
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .feature {
-            background-color: white;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-        
-        .feature-title {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-            color: var(--gray-800);
-        }
-        
-        .feature-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 2.5rem;
-            height: 2.5rem;
-            background-color: var(--primary);
-            color: white;
-            border-radius: 0.5rem;
-        }
-        
-        .feature-desc {
-            color: var(--gray-700);
-            font-size: 0.95rem;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 2rem;
-            color: var(--gray-700);
-            font-size: 0.875rem;
-        }
-        
-        @media (max-width: 768px) {
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .control-group {
-                justify-content: flex-start;
-            }
-            
-            .tabs {
-                overflow-x: auto;
-                white-space: nowrap;
-                padding-bottom: 0.25rem;
-            }
-        }
-    
-.heading-box {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 1rem 1.5rem;
-  background-color: #f4f4f4;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.heading-box h2,
-.heading-box h3 {
-  margin: 0;
-  padding: 0;
-}
-
-.content-section ul {
-  padding-left: 2rem;
-}
-
-/* New Header Styles */
-.site-header {
-    background-color: #8cb8e8; /* Slightly darker than #a0d0ff */
-    padding: 15px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.logo {
-    font-family: 'Poppins', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: #333;
-    text-decoration: none;
-    letter-spacing: 0.5px;
-}
-
-.nav-buttons {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.nav-button {
-    background: none;
-    border: none;
-    color: #333;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    padding: 10px 16px;
-    border-radius: 5px;
-    transition: all 0.2s;
-    letter-spacing: 0.2px;
-}
-
-.nav-button:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-}
-
-.language-dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-button {
-    background: none;
-    border: none;
-    color: #333;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    padding: 10px 16px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: all 0.2s;
-    letter-spacing: 0.2px;
-}
-
-.dropdown-button:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: white;
-    min-width: 120px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    border-radius: 4px;
-    right: 0;
-}
-
-.dropdown-content a {
-    color: #333;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    transition: background-color 0.2s;
-}
-
-.dropdown-content a:hover {
-    background-color: #f1f1f1;
-}
-
-.language-dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.arrow-down {
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 5px solid #333;
-    margin-left: 5px;
-}
-
-/* Updated container padding to accommodate new header */
-.container {
-    padding-top: 1rem;
-}
-
-@media (max-width: 768px) {
-    .site-header {
-        flex-direction: column;
-        padding: 15px 20px;
+  <title>Base64 Encoder/Decoder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #7c3aed;
+      --primary-light: #8b5cf6;
+      --primary-dark: #6d28d9;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --dark: #111827;
+      --gray-900: #1f2937;
+      --gray-800: #374151;
+      --gray-700: #4b5563;
+      --gray-600: #6b7280;
+      --gray-300: #d1d5db;
+      --gray-200: #e5e7eb;
+      --gray-100: #f3f4f6;
+      --gray-50: #f9fafb;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --rounded-sm: 0.25rem;
+      --rounded: 0.5rem;
+      --rounded-md: 0.75rem;
+      --rounded-lg: 1rem;
+      --rounded-xl: 1.5rem;
     }
     
-    .nav-buttons {
-        margin-top: 15px;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: var(--gray-900);
+      background-color: var(--gray-50);
+    }
+    
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Header */
+    .header {
+      background-color: white;
+      box-shadow: var(--shadow);
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo-icon {
+      margin-right: 0.5rem;
+      color: var(--primary);
+    }
+    
+    .nav {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    
+    .nav-link {
+      font-weight: 500;
+      color: var(--gray-700);
+      transition: color 0.2s;
+    }
+    
+    .nav-link:hover {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--gray-700);
+      cursor: pointer;
+    }
+    
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    
+    /* Hero Section */
+    .hero {
+      padding: 3rem 0;
+      text-align: center;
+    }
+    
+    .hero h1 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: var(--gray-900);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--gray-600);
+      max-width: 800px;
+      margin: 0 auto 2rem;
+    }
+    
+    /* Main App */
+    .app-container {
+      max-width: 900px;
+      margin: 0 auto 4rem;
+    }
+    
+    .app-card {
+      background-color: white;
+      border-radius: var(--rounded-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      background-color: var(--gray-100);
+      padding: 0.5rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 1rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      cursor: pointer;
+      border-radius: var(--rounded);
+      transition: all 0.2s;
+    }
+    
+    .tab:hover {
+      color: var(--primary);
+    }
+    
+    .tab.active {
+      color: white;
+      background-color: var(--primary);
+    }
+    
+    /* App Body */
+    .app-body {
+      padding: 2rem;
+    }
+    
+    .input-type {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    
+    input[type="radio"] {
+      accent-color: var(--primary);
+      width: 1.25rem;
+      height: 1.25rem;
+      cursor: pointer;
+    }
+    
+    /* Input and Output */
+    .input-group, .output-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .group-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    
+    label {
+      font-weight: 600;
+      color: var(--gray-800);
+    }
+    
+    .file-info {
+      font-size: 0.875rem;
+      color: var(--gray-600);
+    }
+    
+    textarea {
+      width: 100%;
+      min-height: 150px;
+      padding: 1rem;
+      border: 2px solid var(--gray-200);
+      border-radius: var(--rounded);
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--gray-800);
+      transition: all 0.2s;
+      resize: vertical;
+    }
+    
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+    }
+    
+    /* Controls */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      font-size: 1rem;
+      color: white;
+      background-color: var(--primary);
+      border: none;
+      border-radius: var(--rounded);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .btn-secondary {
+      color: var(--gray-800);
+      background-color: var(--gray-200);
+    }
+    
+    .btn-secondary:hover {
+      background-color: var(--gray-300);
+    }
+    
+    .btn-icon {
+      padding: 0.75rem;
+    }
+    
+    .btn-success {
+      background-color: var(--success);
+    }
+    
+    .btn-success:hover {
+      background-color: #0ca678;
+    }
+    
+    /* Options */
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .option-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    input[type="checkbox"] {
+      accent-color: var(--primary);
+      width: 1.25rem;
+      height: 1.25rem;
+      cursor: pointer;
+    }
+    
+    /* Status Message */
+    .status {
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: var(--rounded);
+      background-color: var(--gray-100);
+      font-size: 0.95rem;
+    }
+    
+    .status.success {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+      border-left: 4px solid var(--success);
+    }
+    
+    .status.error {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: var(--error);
+      border-left: 4px solid var(--error);
+    }
+    
+    /* Features */
+    .features {
+      margin-top: 4rem;
+    }
+    
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      color: var(--gray-900);
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .feature-card {
+      background-color: white;
+      border-radius: var(--rounded-md);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .feature-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 4rem;
+      height: 4rem;
+      background-color: var(--primary-light);
+      color: white;
+      border-radius: var(--rounded);
+      margin-bottom: 1.5rem;
+    }
+    
+    .feature-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--gray-900);
+    }
+    
+    .feature-desc {
+      color: var(--gray-600);
+    }
+    
+    /* Info Sections */
+    .info-section {
+      max-width: 800px;
+      margin: 4rem auto;
+      padding: 2rem;
+      background-color: white;
+      border-radius: var(--rounded-lg);
+      box-shadow: var(--shadow);
+    }
+    
+    .info-section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--gray-900);
+    }
+    
+    .info-section h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 1.5rem 0 1rem;
+      color: var(--gray-800);
+    }
+    
+    .info-section p {
+      margin-bottom: 1.5rem;
+      color: var(--gray-700);
+    }
+    
+    .info-section ul {
+      padding-left: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--gray-700);
+    }
+    
+    /* Footer */
+    .footer {
+      background-color: white;
+      border-top: 1px solid var(--gray-200);
+      padding: 2rem 0;
+      margin-top: 4rem;
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    .footer-link {
+      color: var(--gray-600);
+      font-size: 0.875rem;
+    }
+    
+    .copyright {
+      color: var(--gray-600);
+      font-size: 0.875rem;
+    }
+    
+    /* Utilities */
+    .spacer {
+      flex-grow: 1;
+    }
+    
+    .file-input {
+      display: none;
+    }
+    
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .hero p {
+        font-size: 1rem;
+      }
+      
+      .app-body {
+        padding: 1.5rem;
+      }
+      
+      .controls {
+        flex-direction: column;
+      }
+      
+      .btn {
         width: 100%;
         justify-content: center;
+      }
+      
+      .tabs {
+        padding: 0.25rem;
+      }
+      
+      .tab {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.95rem;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .nav {
+        display: none;
+      }
+      
+      .nav.active {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: white;
+        padding: 1rem;
+        box-shadow: var(--shadow-md);
+      }
+      
+      .footer-container {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+      
+      .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
     }
-}
-</style>
+  </style>
 </head>
 <body>
-<!-- New Header -->
-<header class="site-header">
-    <a href="/" class="logo">Base64Converter.org</a>
-    
-    <div class="nav-buttons">
-        <button class="nav-button" onclick="location.href='/about'">About</button>
-        <button class="nav-button">FAQ</button>
-        
-        <div class="language-dropdown">
-            <button class="dropdown-button">
-                English
-                <div class="arrow-down"></div>
-            </button>
-            <div class="dropdown-content">
-                <a href="#">English</a>
-                <a href="#">Español</a>
-                <a href="#">Français</a>
-                <a href="#">Deutsch</a>
-                <a href="#">中文</a>
-            </div>
-        </div>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <a href="/" class="logo">
+        <svg class="logo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 4L3 11L10 14L13 21L20 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Base64Converter.org
+      </a>
+      
+      <button class="mobile-menu-btn" id="mobile-menu-toggle">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      
+      <nav class="nav" id="nav">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/about" class="nav-link">About</a>
+        <a href="/faq" class="nav-link">FAQ</a>
+      </nav>
     </div>
-</header>
+  </header>
 
-<div class="container">
-<!-- Original header content is changed to a regular div since we have a new header -->
-<div>
-<h1>Base64 Converter: Encode and Decode Data with Ease</h1>
-<p class="subtitle">- Input field for binary information, encoded string, or text data. <br/>
-- Output data displayed with decode button for easy access.<br/>
-- Displays line numbers and file size for detailed results.</p>
-</div>
-<main>
-<div class="app">
-<div class="tabs">
-<div class="tab active" id="tab-encode">Encode</div>
-<div class="tab" id="tab-decode">Decode</div>
-</div>
-<div class="radio-group">
-<label class="radio-label">
-<input checked="" name="input-type" type="radio" value="text"/>
-<span>Text</span>
-</label>
-<label class="radio-label">
-<input name="input-type" type="radio" value="file"/>
-<span>File</span>
-</label>
-</div>
-<div class="input-group">
-<label for="input">Input:</label>
-<textarea id="input" placeholder="Enter text to encode or decode"></textarea>
-<input class="file-input" id="file-input" type="file"/>
-<div class="info file-info" style="display: none;">No file selected</div>
-</div>
-<div class="controls">
-<button class="btn" id="process-btn">
-<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 21l7.9-7.9c.4-.4.4-1 0-1.4L7 4"></path>
-</svg>
-<span id="process-text">Encode</span>
-</button>
-<button class="btn btn-secondary" id="clear-btn">
-<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
-<path d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"></path>
-<line x1="18" x2="12" y1="9" y2="15"></line>
-<line x1="12" x2="18" y1="9" y2="15"></line>
-</svg>
-<span>Clear</span>
-</button>
-<div class="spacer"></div>
-<div class="control-group" id="file-controls" style="display: none;">
-<button class="btn btn-secondary" id="select-file-btn">
-<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
-<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-<polyline points="14 2 14 8 20 8"></polyline>
-<line x1="12" x2="12" y1="18" y2="12"></line>
-<line x1="9" x2="15" y1="15" y2="15"></line>
-</svg>
-<span>Select File</span>
-</button>
-</div>
-</div>
-<div class="options">
-<div class="option-group">
-<input checked="" id="url-safe" type="checkbox"/>
-<label for="url-safe">URL-safe (use - and _ instead of + and /)</label>
-</div>
-<div class="option-group" id="padding-option">
-<input checked="" id="padding" type="checkbox"/>
-<label for="padding">Include padding (=)</label>
-</div>
-</div>
-<div class="output-group">
-<label for="output">Output:</label>
-<textarea id="output" readonly=""></textarea>
-</div>
-<div class="controls">
-<button class="btn" id="copy-btn">
-<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
-<rect height="13" rx="2" ry="2" width="13" x="9" y="9"></rect>
-<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-</svg>
-<span>Copy to Clipboard</span>
-</button>
-<button class="btn btn-secondary" id="download-btn">
-<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
-<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-<polyline points="7 10 12 15 17 10"></polyline>
-<line x1="12" x2="12" y1="15" y2="3"></line>
-</svg>
-<span>Download Result</span>
-</button>
-<div class="spacer"></div>
-<button class="btn btn-secondary btn-icon" id="swap-btn">
-<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg">
-<line x1="12" x2="12" y1="3" y2="21"></line>
-<polyline points="19 10 12 3 5 10"></polyline>
-<polyline points="5 14 12 21 19 14"></polyline>
-</svg>
-</button>
-</div>
-<div class="status" id="status-message" style="display: none;"></div>
-</div>
-<div class="features">
-<div class="feature">
-<h3 class="feature-title">
-<div class="feature-icon">
-<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
-<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-</svg>
-</div>
-                        Fast Conversion
-                    </h3>
-<p class="feature-desc">
-                        Process text and files instantly with client-side computation. No server delays, no data sent to remote servers, ensuring your privacy.
-                    </p>
-</div>
-<div class="feature">
-<h3 class="feature-title">
-<div class="feature-icon">
-<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
-<circle cx="12" cy="12" r="10"></circle>
-<line x1="12" x2="12" y1="16" y2="12"></line>
-<line x1="12" x2="12.01" y1="8" y2="8"></line>
-</svg>
-</div>
-                        Advanced Options
-                    </h3>
-<p class="feature-desc">
-                        Control URL-safe characters, padding, line breaks, and encoding formats to suit your specific needs for every project.
-                    </p>
-</div>
-<div class="feature">
-<h3 class="feature-title">
-<div class="feature-icon">
-<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
-<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-<polyline points="14 2 14 8 20 8"></polyline>
-<line x1="16" x2="8" y1="13" y2="13"></line>
-<line x1="16" x2="8" y1="17" y2="17"></line>
-<polyline points="10 9 9 9 8 9"></polyline>
-</svg>
-</div>
-                        File Support
-                    </h3>
-<p class="feature-desc">
-                        Encode and decode files of any type, including images, documents, and binary data with streamlined file handling.
-                    </p>
-</div>
-</div>
-<!-- New SEO Content Sections -->
-<div class="content-section">
-<div class="heading-box"><h2>What is a Base64 Converter?</h2></div>
-<p>A Base64 converter is an essential tool for developers and technical professionals who work with different data formats. This online utility allows you to quickly convert data between its raw binary form and Base64 encoded representation without any installation required.</p>
-<div class="heading-box"><h3>Understanding Base64 Encoding and Its Use Cases</h3></div>
-<ul>
-<li>Transforms binary data into a base64 string.</li>
-<li>Part of a subset of character encoding schemes like ASCII format.</li>
-<li>Used for mime-content transfer and basic authentication.</li>
-</ul>
-<p>Base64 encoding serves as a bridge between binary data and text-based systems. It takes raw binary information and represents it using a set of 64 printable characters that are universally recognized across different platforms and systems.</p>
-<div class="heading-box"><h3>Why Use a Base64 Converter?</h3></div>
-<ul>
-<li>Encode image files, binary files, and text data.</li>
-<li>Embed encoded values in HTML, CSS background, or img src.</li>
-<li>Ensure compatibility across file types like XML, JSON, and TSV.</li>
-</ul>
-<p>Our Base64 converter provides a seamless way to prepare data for transmission or storage in environments where binary data might otherwise cause issues. Whether you're working on web development, data transfer protocols, or system integration, having a reliable Base64 conversion tool at your fingertips streamlines your workflow.</p>
-</div>
-<div class="content-section">
-<div class="heading-box"><h2>How Does the Encoding Process Work</h2></div>
-<p>The Base64 encoding algorithm follows a systematic approach to transform binary data into readable text. First, it divides the input data into 6-bit groups, since 2^6 = 64, which provides the 64 different values needed for the encoding scheme. Each 6-bit value is then mapped to a corresponding printable character from the Base64 alphabet.</p>
-<p>When encoding, every 3 bytes (24 bits) of binary data are converted into 4 Base64 characters. If the input length is not divisible by 3, padding characters (=) are added to ensure proper alignment. This padding indicates to decoders that the original data length wasn't a multiple of 3 bytes.</p>
-<p>Our converter handles all these complexities automatically, providing options for URL-safe encoding (which replaces + and / with - and _) and padding control to suit different application requirements.</p>
-</div>
-<div class="content-section">
-<div class="heading-box"><h2>Applications for Developers and Professionals</h2></div>
-<p>Base64 encoding plays a crucial role in numerous development and technical scenarios. Understanding when and how to leverage this encoding can significantly optimize your projects and workflows.</p>
-<div class="heading-box"><h3>Streamlining Web Page Development</h3></div>
-<ul>
-<li>Embed encoded data directly in an HTML page for website speed.</li>
-<li>Use url encoder and url decoder for handling data URIs.</li>
-<li>Optimize http headers for faster browser support.</li>
-</ul>
-<p>Modern web development often requires embedding resources directly within HTML or CSS to reduce HTTP requests. Base64 encoding allows images, fonts, and other binary assets to be included inline, improving page load performance and reducing server calls.</p>
-<div class="heading-box"><h3>Additional Use Cases Across Industries</h3></div>
-<ul>
-<li>Electronic mail and multipurpose internet mail extensions.</li>
-<li>Generate ip address and ip generator data for information systems.</li>
-<li>Works as a virtual teacher for character encoding schemes.</li>
-</ul>
-<p>From email systems that need to transmit binary attachments to database storage optimizations, Base64's versatility makes it an essential tool across various technical domains. Our converter simplifies these operations with a clean, intuitive interface that works directly in your browser.</p>
-</div>
-</main>
-<footer>
-<p>© 2025 Ultimate Base64 Tool | All rights reserved</p>
-</footer>
-</div>
-<script>
-        // DOM Elements
-        const encodeTab = document.getElementById('tab-encode');
-        const decodeTab = document.getElementById('tab-decode');
-        const inputTextarea = document.getElementById('input');
-        const outputTextarea = document.getElementById('output');
-        const processBtn = document.getElementById('process-btn');
-        const processText = document.getElementById('process-text');
-        const clearBtn = document.getElementById('clear-btn');
-        const copyBtn = document.getElementById('copy-btn');
-        const downloadBtn = document.getElementById('download-btn');
-        const swapBtn = document.getElementById('swap-btn');
-        const statusMessage = document.getElementById('status-message');
-        const urlSafeCheckbox = document.getElementById('url-safe');
-        const paddingCheckbox = document.getElementById('padding');
-        const paddingOption = document.getElementById('padding-option');
-        const fileInput = document.getElementById('file-input');
-        const fileInfo = document.querySelector('.file-info');
-        const fileControls = document.getElementById('file-controls');
-        const selectFileBtn = document.getElementById('select-file-btn');
-        const inputTypeRadios = document.querySelectorAll('input[name="input-type"]');
+  <div class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+      <h1>Base64 Converter</h1>
+      <p>Fast and secure Base64 encoding and decoding for text and files. 100% client-side, no data sent to servers.</p>
+    </section>
+    
+    <!-- Main App -->
+    <div class="app-container">
+      <div class="app-card">
+        <div class="tabs">
+          <div class="tab active" id="tab-encode">Encode</div>
+          <div class="tab" id="tab-decode">Decode</div>
+        </div>
+        
+        <div class="app-body">
+          <div class="input-type">
+            <label class="radio-label">
+              <input checked="" name="input-type" type="radio" value="text"/>
+              <span>Text</span>
+            </label>
+            <label class="radio-label">
+              <input name="input-type" type="radio" value="file"/>
+              <span>File</span>
+            </label>
+          </div>
+          
+          <div class="input-group">
+            <div class="group-title">
+              <label for="input">Input</label>
+              <div class="file-info" style="display: none;">No file selected</div>
+            </div>
+            <textarea id="input" placeholder="Enter text to encode or decode"></textarea>
+            <input class="file-input" id="file-input" type="file"/>
+          </div>
+          
+          <div class="options">
+            <div class="option-group">
+              <input checked="" id="url-safe" type="checkbox"/>
+              <label for="url-safe">URL-safe (use - and _ instead of + and /)</label>
+            </div>
+            <div class="option-group" id="padding-option">
+              <input checked="" id="padding" type="checkbox"/>
+              <label for="padding">Include padding (=)</label>
+            </div>
+          </div>
+          
+          <div class="controls">
+            <button class="btn" id="process-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span id="process-text">Encode</span>
+            </button>
+            
+            <button class="btn btn-secondary" id="clear-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              <span>Clear</span>
+            </button>
+            
+            <div id="file-controls" style="display: none;">
+              <button class="btn btn-secondary" id="select-file-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 3h10a2 2 0 0 1 1.4.6l3 3a2 2 0 0 1 .6 1.4v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+                  <path d="M12 11v6"/>
+                  <path d="M9 14h6"/>
+                </svg>
+                <span>Select File</span>
+              </button>
+            </div>
+          </div>
+          
+          <div class="output-group">
+            <div class="group-title">
+              <label for="output">Output</label>
+            </div>
+            <textarea id="output" readonly=""></textarea>
+          </div>
+          
+          <div class="controls">
+            <button class="btn btn-success" id="copy-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
+              </svg>
+              <span>Copy to Clipboard</span>
+            </button>
+            
+            <button class="btn btn-secondary" id="download-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              <span>Download Result</span>
+            </button>
+            
+            <button class="btn btn-secondary btn-icon" id="swap-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/>
+              </svg>
+            </button>
+          </div>
+          
+          <div class="status" id="status-message" style="display: none;"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Features Section -->
+    <section class="features">
+      <h2 class="section-title">Key Features</h2>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 2L3 14h9l-1 8 10-16h-9l1-4z"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Lightning Fast</h3>
+          <p class="feature-desc">Encode and decode instantly with client-side computation. No server delays or data transmission required.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0110 0v4"/>
+              <circle cx="12" cy="16" r="1"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">100% Secure</h3>
+          <p class="feature-desc">All processing happens in your browser. Your data never leaves your device, ensuring complete privacy.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+              <path d="M14 2v6h6"/>
+              <path d="M16 13H8"/>
+              <path d="M16 17H8"/>
+              <path d="M10 9H8"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Multiple File Types</h3>
+          <p class="feature-desc">Handle text data, images, documents, and any other file type with our versatile encoding and decoding capabilities.</p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Info Sections -->
+    <section class="info-section">
+      <h2>What is Base64 Encoding?</h2>
+      <p>Base64 is a binary-to-text encoding scheme that represents binary data in an ASCII string format. It's commonly used to transmit binary data over channels that only reliably support text content, such as email and HTTP.</p>
+      
+      <h3>Common Use Cases</h3>
+      <ul>
+        <li>Embedding binary data (like images) directly in HTML or CSS</li>
+        <li>Sending binary data in JSON payloads</li>
+        <li>Encoding data for URL parameters</li>
+        <li>Email attachments (MIME)</li>
+        <li>Basic HTTP authentication</li>
+      </ul>
+      
+      <p>Our tool makes it easy to convert between raw data and Base64 encoding, with options for URL-safe encoding and custom padding settings to fit your specific needs.</p>
+    </section>
+  </div>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="/" class="footer-link">Home</a>
+        <a href="/about" class="footer-link">About</a>
+        <a href="/privacy" class="footer-link">Privacy Policy</a>
+        <a href="/terms" class="footer-link">Terms of Service</a>
+      </div>
+      
+      <div class="copyright">
+        &copy; 2025 Base64Converter.org | All rights reserved
+      </div>
+    </div>
+  </footer>
 
-        // State
-        let mode = 'encode'; // 'encode' or 'decode'
-        let inputType = 'text'; // 'text' or 'file'
-        let fileData = null;
-        let fileName = '';
+  <script>
+    // DOM Elements
+    const encodeTab = document.getElementById('tab-encode');
+    const decodeTab = document.getElementById('tab-decode');
+    const inputTextarea = document.getElementById('input');
+    const outputTextarea = document.getElementById('output');
+    const processBtn = document.getElementById('process-btn');
+    const processText = document.getElementById('process-text');
+    const clearBtn = document.getElementById('clear-btn');
+    const copyBtn = document.getElementById('copy-btn');
+    const downloadBtn = document.getElementById('download-btn');
+    const swapBtn = document.getElementById('swap-btn');
+    const statusMessage = document.getElementById('status-message');
+    const urlSafeCheckbox = document.getElementById('url-safe');
+    const paddingCheckbox = document.getElementById('padding');
+    const paddingOption = document.getElementById('padding-option');
+    const fileInput = document.getElementById('file-input');
+    const fileInfo = document.querySelector('.file-info');
+    const fileControls = document.getElementById('file-controls');
+    const selectFileBtn = document.getElementById('select-file-btn');
+    const inputTypeRadios = document.querySelectorAll('input[name="input-type"]');
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const nav = document.getElementById('nav');
 
-        // Initialize
-        function init() {
+    // State
+    let mode = 'encode'; // 'encode' or 'decode'
+    let inputType = 'text'; // 'text' or 'file'
+    let fileData = null;
+    let fileName = '';
+
+    // Initialize
+    function init() {
+        updateUIForMode();
+        addEventListeners();
+    }
+
+    // Event Listeners
+    function addEventListeners() {
+        // Mobile menu toggle
+        mobileMenuToggle.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+        
+        // Tab switching
+        encodeTab.addEventListener('click', () => {
+            mode = 'encode';
             updateUIForMode();
-            addEventListeners();
-        }
-
-        // Event Listeners
-        function addEventListeners() {
-            // Tab switching
-            encodeTab.addEventListener('click', () => {
-                mode = 'encode';
-                updateUIForMode();
-            });
-            
-            decodeTab.addEventListener('click', () => {
-                mode = 'decode';
-                updateUIForMode();
-            });
-            
-            // Process button
-            processBtn.addEventListener('click', processData);
-            
-            // Clear button
-            clearBtn.addEventListener('click', () => {
-                inputTextarea.value = '';
+        });
+        
+        decodeTab.addEventListener('click', () => {
+            mode = 'decode';
+            updateUIForMode();
+        });
+        
+        // Process button
+        processBtn.addEventListener('click', processData);
+        
+        // Clear button
+        clearBtn.addEventListener('click', () => {
+            inputTextarea.value = '';
+            outputTextarea.value = '';
+            fileData = null;
+            fileName = '';
+            fileInfo.textContent = 'No file selected';
+            hideStatus();
+        });
+        
+        // Copy button
+        copyBtn.addEventListener('click', () => {
+            if (outputTextarea.value) {
+                navigator.clipboard.writeText(outputTextarea.value)
+                    .then(() => showStatus('Copied to clipboard!', 'success'))
+                    .catch(() => showStatus('Failed to copy to clipboard', 'error'));
+            }
+        });
+        
+        // Download button
+        downloadBtn.addEventListener('click', downloadResult);
+        
+        // Swap button
+        swapBtn.addEventListener('click', () => {
+            if (outputTextarea.value) {
+                inputTextarea.value = outputTextarea.value;
                 outputTextarea.value = '';
-                fileData = null;
-                fileName = '';
-                fileInfo.textContent = 'No file selected';
-                hideStatus();
+                
+                // Also swap mode
+                mode = mode === 'encode' ? 'decode' : 'encode';
+                updateUIForMode();
+            }
+        });
+        
+        // Input type radio buttons
+        inputTypeRadios.forEach(radio => {
+            radio.addEventListener('change', e => {
+                inputType = e.target.value;
+                updateUIForInputType();
             });
-            
-            // Copy button
-            copyBtn.addEventListener('click', () => {
-                if (outputTextarea.value) {
-                    navigator.clipboard.writeText(outputTextarea.value)
-                        .then(() => showStatus('Copied to clipboard!', 'success'))
-                        .catch(() => showStatus('Failed to copy to clipboard', 'error'));
-                }
-            });
-            
-            // Download button
-            downloadBtn.addEventListener('click', downloadResult);
-            
-            // Swap button
-            swapBtn.addEventListener('click', () => {
-                if (outputTextarea.value) {
-                    inputTextarea.value = outputTextarea.value;
-                    outputTextarea.value = '';
-                    
-                    // Also swap mode
-                    mode = mode === 'encode' ? 'decode' : 'encode';
-                    updateUIForMode();
-                }
-            });
-            
-            // Input type radio buttons
-            inputTypeRadios.forEach(radio => {
-                radio.addEventListener('change', e => {
-                    inputType = e.target.value;
-                    updateUIForInputType();
-                });
-            });
-            
-            // File input
-            fileInput.addEventListener('change', handleFileSelection);
-            
-            // Select file button
-            selectFileBtn.addEventListener('click', () => {
-                fileInput.click();
-            });
-            
-            // Input live processing
-            inputTextarea.addEventListener('input', debounce(() => {
-                if (inputTextarea.value.length > 0) {
-                    processData();
-                }
-            }, 500));
-        }
+        });
+        
+        // File input
+        fileInput.addEventListener('change', handleFileSelection);
+        
+        // Select file button
+        selectFileBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        // Input live processing
+        inputTextarea.addEventListener('input', debounce(() => {
+            if (inputTextarea.value.length > 0) {
+                processData();
+            }
+        }, 500));
+    }
 
-        // Update UI based on mode (encode/decode)
-        function updateUIForMode() {
+    // Update UI based on mode (encode/decode)
+    function updateUIForMode() {
+        if (mode === 'encode') {
+            encodeTab.classList.add('active');
+            decodeTab.classList.remove('active');
+            processText.textContent = 'Encode';
+            paddingOption.style.display = 'flex';
+        } else {
+            encodeTab.classList.remove('active');
+            decodeTab.classList.add('active');
+            processText.textContent = 'Decode';
+            paddingOption.style.display = 'none';
+        }
+    }
+
+    // Update UI based on input type (text/file)
+    function updateUIForInputType() {
+        if (inputType === 'text') {
+            inputTextarea.style.display = 'block';
+            fileControls.style.display = 'none';
+            fileInfo.style.display = 'none';
+        } else {
+            inputTextarea.style.display = 'none';
+            fileControls.style.display = 'flex';
+            fileInfo.style.display = 'block';
+        }
+    }
+
+    // Handle file selection
+    function handleFileSelection(e) {
+        const file = e.target.files[0];
+        if (file) {
+            fileName = file.name;
+            fileInfo.textContent = `Selected file: ${fileName} (${formatFileSize(file.size)})`;
+            fileInfo.style.display = 'block';
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+                fileData = event.target.result;
+                processData();
+            };
+            
             if (mode === 'encode') {
-                encodeTab.classList.add('active');
-                decodeTab.classList.remove('active');
-                processText.textContent = 'Encode';
-                paddingOption.style.display = 'flex';
+                reader.readAsArrayBuffer(file);
             } else {
-                encodeTab.classList.remove('active');
-                decodeTab.classList.add('active');
-                processText.textContent = 'Decode';
-                paddingOption.style.display = 'none';
+                reader.readAsText(file);
             }
         }
+    }
 
-        // Update UI based on input type (text/file)
-        function updateUIForInputType() {
-            if (inputType === 'text') {
-                inputTextarea.style.display = 'block';
-                fileControls.style.display = 'none';
-                fileInfo.style.display = 'none';
+    // Format file size
+    function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' bytes';
+        else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+        else return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+
+    // Process data (encode or decode)
+    function processData() {
+        try {
+            hideStatus();
+            
+            if (mode === 'encode') {
+                encodeData();
             } else {
-                inputTextarea.style.display = 'none';
-                fileControls.style.display = 'flex';
-                fileInfo.style.display = 'block';
+                decodeData();
             }
+        } catch (error) {
+            showStatus(`Error: ${error.message}`, 'error');
+            outputTextarea.value = '';
         }
+    }
 
-        // Handle file selection
-        function handleFileSelection(e) {
-            const file = e.target.files[0];
-            if (file) {
-                fileName = file.name;
-                fileInfo.textContent = `Selected file: ${fileName} (${formatFileSize(file.size)})`;
-                
-                const reader = new FileReader();
-                
-                reader.onload = function(event) {
-                    fileData = event.target.result;
-                    processData();
-                };
-                
-                if (mode === 'encode') {
-                    reader.readAsArrayBuffer(file);
-                } else {
-                    reader.readAsText(file);
-                }
-            }
-        }
-
-        // Format file size
-        function formatFileSize(bytes) {
-            if (bytes < 1024) return bytes + ' bytes';
-            else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-            else return (bytes / 1048576).toFixed(1) + ' MB';
-        }
-
-        // Process data (encode or decode)
-        function processData() {
-            try {
-                hideStatus();
-                
-                if (mode === 'encode') {
-                    encodeData();
-                } else {
-                    decodeData();
-                }
-            } catch (error) {
-                showStatus(`Error: ${error.message}`, 'error');
-                outputTextarea.value = '';
-            }
-        }
-
-        // Encode data
-        function encodeData() {
-            let inputData;
+    // Encode data
+    function encodeData() {
+        let inputData;
+        
+        if (inputType === 'file' && fileData) {
+            // Handle file data
+            inputData = new Uint8Array(fileData);
             
-            if (inputType === 'file' && fileData) {
-                // Handle file data
-                inputData = new Uint8Array(fileData);
-                
-                // Convert to base64
-                let base64 = arrayBufferToBase64(inputData);
-                
-                // Apply URL-safe option if needed
-                if (urlSafeCheckbox.checked) {
-                    base64 = base64.replace(/\+/g, '-').replace(/\//g, '_');
-                }
-                
-                // Remove padding if needed
-                if (!paddingCheckbox.checked) {
-                    base64 = base64.replace(/=/g, '');
-                }
-                
-                outputTextarea.value = base64;
-            } else if (inputType === 'text' && inputTextarea.value) {
-                // Handle text data
-                const text = inputTextarea.value;
-                
-                // Convert string to ArrayBuffer
-                const encoder = new TextEncoder();
-                const data = encoder.encode(text);
-                
-                // Convert to base64
-                let base64 = arrayBufferToBase64(data);
-                
-                // Apply URL-safe option if needed
-                if (urlSafeCheckbox.checked) {
-                    base64 = base64.replace(/\+/g, '-').replace(/\//g, '_');
-                }
-                
-                // Remove padding if needed
-                if (!paddingCheckbox.checked) {
-                    base64 = base64.replace(/=/g, '');
-                }
-                
-                outputTextarea.value = base64;
-            }
-        }
-
-        // Decode data
-        function decodeData() {
-            let inputData;
+            // Convert to base64
+            let base64 = arrayBufferToBase64(inputData);
             
-            if (inputType === 'file' && fileData) {
-                // Handle file data
-                inputData = fileData;
-            } else if (inputType === 'text' && inputTextarea.value) {
-                // Handle text data
-                inputData = inputTextarea.value;
-            } else {
-                return;
-            }
-            
-            // Process input data - remove whitespace
-            let base64 = inputData.trim().replace(/\s/g, '');
-            
-            // Handle URL-safe characters
+            // Apply URL-safe option if needed
             if (urlSafeCheckbox.checked) {
-                base64 = base64.replace(/-/g, '+').replace(/_/g, '/');
+                base64 = base64.replace(/\+/g, '-').replace(/\//g, '_');
             }
             
-            // Add padding if missing
-            while (base64.length % 4 !== 0) {
-                base64 += '=';
+            // Remove padding if needed
+            if (!paddingCheckbox.checked) {
+                base64 = base64.replace(/=/g, '');
             }
             
+            outputTextarea.value = base64;
+        } else if (inputType === 'text' && inputTextarea.value) {
+            // Handle text data
+            const text = inputTextarea.value;
+            
+            // Convert string to ArrayBuffer
+            const encoder = new TextEncoder();
+            const data = encoder.encode(text);
+            
+            // Convert to base64
+            let base64 = arrayBufferToBase64(data);
+            
+            // Apply URL-safe option if needed
+            if (urlSafeCheckbox.checked) {
+                base64 = base64.replace(/\+/g, '-').replace(/\//g, '_');
+            }
+            
+            // Remove padding if needed
+            if (!paddingCheckbox.checked) {
+                base64 = base64.replace(/=/g, '');
+            }
+            
+            outputTextarea.value = base64;
+        }
+    }
+
+    // Decode data
+    function decodeData() {
+        let inputData;
+        
+        if (inputType === 'file' && fileData) {
+            // Handle file data
+            inputData = fileData;
+        } else if (inputType === 'text' && inputTextarea.value) {
+            // Handle text data
+            inputData = inputTextarea.value;
+        } else {
+            return;
+        }
+        
+        // Process input data - remove whitespace
+        let base64 = inputData.trim().replace(/\s/g, '');
+        
+        // Handle URL-safe characters
+        if (urlSafeCheckbox.checked) {
+            base64 = base64.replace(/-/g, '+').replace(/_/g, '/');
+        }
+        
+        // Add padding if missing
+        while (base64.length % 4 !== 0) {
+            base64 += '=';
+        }
+        
+        try {
+            // Try to decode as text first
+            const binary = atob(base64);
+            const bytes = new Uint8Array(binary.length);
+            
+            for (let i = 0; i < binary.length; i++) {
+                bytes[i] = binary.charCodeAt(i);
+            }
+            
+            // Try to convert to text
             try {
-                // Try to decode as text first
-                const binary = atob(base64);
-                const bytes = new Uint8Array(binary.length);
-                
-                for (let i = 0; i < binary.length; i++) {
-                    bytes[i] = binary.charCodeAt(i);
-                }
-                
-                // Try to convert to text
-                try {
-                    const decoder = new TextDecoder('utf-8', { fatal: false });
-                    const text = decoder.decode(bytes);
-                    outputTextarea.value = text;
-                } catch (e) {
-                    // If it fails, it's likely binary data
-                    outputTextarea.value = '[Binary data decoded. Use the Download button to save the result.]';
-                    
-                    // Store binary data for download
-                    fileData = bytes.buffer;
-                    fileName = 'decoded_file';
-                }
-                
+                const decoder = new TextDecoder('utf-8', { fatal: false });
+                const text = decoder.decode(bytes);
+                outputTextarea.value = text;
             } catch (e) {
-                console.error("Decoding error:", e);
-                throw new Error('Invalid Base64 data');
-            }
-        }
-
-        // Convert ArrayBuffer to base64
-        function arrayBufferToBase64(buffer) {
-            let binary = '';
-            const bytes = new Uint8Array(buffer);
-            const len = bytes.byteLength;
-            
-            for (let i = 0; i < len; i++) {
-                binary += String.fromCharCode(bytes[i]);
+                // If it fails, it's likely binary data
+                outputTextarea.value = '[Binary data decoded. Use the Download button to save the result.]';
+                
+                // Store binary data for download
+                fileData = bytes.buffer;
+                fileName = 'decoded_file';
             }
             
-            return btoa(binary);
+        } catch (e) {
+            console.error("Decoding error:", e);
+            throw new Error('Invalid Base64 data');
         }
+    }
 
-        // Download result
-        function downloadResult() {
-            if (!outputTextarea.value) return;
-            
-            const link = document.createElement('a');
-            
-            if (mode === 'encode') {
-                // Download as text file
+    // Convert ArrayBuffer to base64
+    function arrayBufferToBase64(buffer) {
+        let binary = '';
+        const bytes = new Uint8Array(buffer);
+        const len = bytes.byteLength;
+        
+        for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        
+        return btoa(binary);
+    }
+
+    // Download result
+    function downloadResult() {
+        if (!outputTextarea.value) return;
+        
+        const link = document.createElement('a');
+        
+        if (mode === 'encode') {
+            // Download as text file
+            const blob = new Blob([outputTextarea.value], { type: 'text/plain' });
+            link.href = URL.createObjectURL(blob);
+            link.download = 'encoded_base64.txt';
+        } else {
+            // For decoded data, check if we have binary data
+            if (fileData) {
+                const blob = new Blob([new Uint8Array(fileData)]);
+                link.href = URL.createObjectURL(blob);
+                link.download = fileName || 'decoded_file';
+            } else {
+                // Plain text
                 const blob = new Blob([outputTextarea.value], { type: 'text/plain' });
                 link.href = URL.createObjectURL(blob);
-                link.download = 'encoded_base64.txt';
-            } else {
-                // For decoded data, check if we have binary data
-                if (fileData) {
-                    const blob = new Blob([new Uint8Array(fileData)]);
-                    link.href = URL.createObjectURL(blob);
-                    link.download = fileName || 'decoded_file';
-                } else {
-                    // Plain text
-                    const blob = new Blob([outputTextarea.value], { type: 'text/plain' });
-                    link.href = URL.createObjectURL(blob);
-                    link.download = 'decoded_text.txt';
-                }
+                link.download = 'decoded_text.txt';
             }
-            
-            link.click();
-            URL.revokeObjectURL(link.href);
         }
+        
+        link.click();
+        URL.revokeObjectURL(link.href);
+    }
 
-        // Show status message
-        function showStatus(message, type = '') {
-            statusMessage.textContent = message;
-            statusMessage.style.display = 'block';
-            
-            // Clear previous classes
-            statusMessage.classList.remove('success', 'error');
-            
-            if (type) {
-                statusMessage.classList.add(type);
-            }
-            
-            // Auto-hide after 3 seconds
-            setTimeout(() => {
-                hideStatus();
-            }, 3000);
+    // Show status message
+    function showStatus(message, type = '') {
+        statusMessage.textContent = message;
+        statusMessage.style.display = 'block';
+        
+        // Clear previous classes
+        statusMessage.classList.remove('success', 'error');
+        
+        if (type) {
+            statusMessage.classList.add(type);
         }
+        
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+            hideStatus();
+        }, 3000);
+    }
 
-        // Hide status message
-        function hideStatus() {
-            statusMessage.style.display = 'none';
-        }
+    // Hide status message
+    function hideStatus() {
+        statusMessage.style.display = 'none';
+    }
 
-        // Debounce function
-        function debounce(func, wait) {
-            let timeout;
-            return function() {
-                const context = this;
-                const args = arguments;
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(context, args), wait);
-            };
-        }
+    // Debounce function
+    function debounce(func, wait) {
+        let timeout;
+        return function() {
+            const context = this;
+            const args = arguments;
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(context, args), wait);
+        };
+    }
 
-        // Start the app
-        init();
-    </script>
+    // Start the app
+    init();
+  </script>
 </body>
 </html>
