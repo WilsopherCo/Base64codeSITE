@@ -12,326 +12,468 @@
 </script>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="description" content="Learn about Base64Converter.org - the secure, fast, and privacy-focused tool for encoding and decoding Base64 data with no server processing.">
 <title>About - Base64Converter.org</title>
-<!-- Added Google Fonts for the header -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-    :root {
-        --primary: #4f46e5;
-        --primary-hover: #4338ca;
-        --gray-50: #f9fafb;
-        --gray-100: #f3f4f6;
-        --gray-200: #e5e7eb;
-        --gray-300: #d1d5db;
-        --gray-700: #374151;
-        --gray-800: #1f2937;
-        --gray-900: #111827;
+  :root {
+    --primary: #7c3aed;
+    --primary-light: #8b5cf6;
+    --primary-dark: #6d28d9;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --dark: #111827;
+    --gray-900: #1f2937;
+    --gray-800: #374151;
+    --gray-700: #4b5563;
+    --gray-600: #6b7280;
+    --gray-300: #d1d5db;
+    --gray-200: #e5e7eb;
+    --gray-100: #f3f4f6;
+    --gray-50: #f9fafb;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --rounded-sm: 0.25rem;
+    --rounded: 0.5rem;
+    --rounded-md: 0.75rem;
+    --rounded-lg: 1rem;
+    --rounded-xl: 1.5rem;
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+    color: var(--gray-900);
+    background-color: var(--gray-50);
+  }
+  
+  a {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Header */
+  .header {
+    background-color: white;
+    box-shadow: var(--shadow);
+    padding: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo-icon {
+    margin-right: 0.5rem;
+    color: var(--primary);
+  }
+  
+  .nav {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  
+  .nav-link {
+    font-weight: 500;
+    color: var(--gray-700);
+    transition: color 0.2s;
+  }
+  
+  .nav-link:hover {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  
+  .nav-link.active {
+    color: var(--primary);
+    font-weight: 600;
+  }
+  
+  .mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--gray-700);
+    cursor: pointer;
+  }
+  
+  /* Container */
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  
+  /* Hero Section */
+  .hero {
+    padding: 3rem 0 2rem;
+    text-align: center;
+  }
+  
+  .hero h1 {
+    font-size: 2.75rem;
+    font-weight: 800;
+    color: var(--gray-900);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+  
+  .hero p {
+    font-size: 1.25rem;
+    color: var(--gray-600);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* Content Section */
+  .content-section {
+    background-color: white;
+    border-radius: var(--rounded-lg);
+    box-shadow: var(--shadow-md);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .content-section h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--gray-100);
+  }
+  
+  .content-section h3 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin: 2rem 0 1rem;
+  }
+  
+  .content-section p {
+    margin-bottom: 1.5rem;
+    color: var(--gray-700);
+  }
+  
+  .content-section a {
+    color: var(--primary);
+    font-weight: 500;
+  }
+  
+  /* Footer */
+  .footer {
+    background-color: white;
+    border-top: 1px solid var(--gray-200);
+    padding: 2rem 0;
+    margin-top: 4rem;
+  }
+  
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .footer-link {
+    color: var(--gray-600);
+    font-size: 0.875rem;
+  }
+  
+  .copyright {
+    color: var(--gray-600);
+    font-size: 0.875rem;
+  }
+  
+  /* Language dropdown */
+  .language-dropdown {
+    position: relative;
+  }
+  
+  .dropdown-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    color: var(--gray-700);
+    background: none;
+    border: none;
+    border-radius: var(--rounded);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .dropdown-button:hover {
+    background-color: var(--gray-100);
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    min-width: 160px;
+    background-color: white;
+    border-radius: var(--rounded);
+    box-shadow: var(--shadow-md);
+    z-index: 10;
+    overflow: hidden;
+  }
+  
+  .dropdown-content a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--gray-700);
+    transition: all 0.2s;
+  }
+  
+  .dropdown-content a:hover {
+    background-color: var(--gray-100);
+    text-decoration: none;
+  }
+  
+  .language-dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  .feature-list {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Mobile Styles */
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 2rem;
     }
     
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-    
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        line-height: 1.6;
-        color: var(--gray-900);
-        background-color: #a0d0ff;
-    }
-    
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
-    }
-    
-    header {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    
-    h1 {
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
-        color: var(--gray-900);
-    }
-    
-    .subtitle {
-        font-size: 1.25rem;
-        color: var(--gray-700);
-        margin-bottom: 1.5rem;
+    .hero p {
+      font-size: 1rem;
     }
     
     .content-section {
-        background-color: white;
-        border-radius: 0.75rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
-        padding: 2rem;
-        margin-bottom: 2rem;
-    }
-
-    h2, h3 {
-        margin: 1.5rem 0 1rem 0;
-        color: var(--gray-800);
+      padding: 1.5rem;
     }
     
-    h2 {
-        font-size: 1.75rem;
+    .mobile-menu-btn {
+      display: block;
     }
     
-    h3 {
-        font-size: 1.35rem;
-        margin-top: 2rem;
-    }
-
-    footer {
-        text-align: center;
-        padding: 2rem 0;
-        margin-top: 2rem;
-        color: var(--gray-700);
-        font-size: 0.875rem;
+    .nav {
+      display: none;
     }
     
-    /* Header Styles */
-    .site-header {
-        background-color: #8cb8e8; /* Slightly darker than #a0d0ff */
-        padding: 15px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    .nav.active {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background-color: white;
+      padding: 1rem;
+      box-shadow: var(--shadow-md);
     }
-
-    .logo {
-        font-family: 'Poppins', sans-serif;
-        font-size: 24px;
-        font-weight: 700;
-        color: #333;
-        text-decoration: none;
-        letter-spacing: 0.5px;
+    
+    .footer-container {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
     }
-
-    .nav-buttons {
-        display: flex;
-        align-items: center;
-        gap: 20px;
+    
+    .footer-links {
+      flex-wrap: wrap;
+      justify-content: center;
     }
-
-    .nav-button {
-        background: none;
-        border: none;
-        color: #333;
-        font-family: 'Montserrat', sans-serif;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        padding: 10px 16px;
-        border-radius: 5px;
-        transition: all 0.2s;
-        letter-spacing: 0.2px;
-        text-decoration: none;
-    }
-
-    .nav-button:hover {
-        background-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .nav-button.active {
-        background-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .language-dropdown {
-        position: relative;
-        display: inline-block;
-    }
-
-    .dropdown-button {
-        background: none;
-        border: none;
-        color: #333;
-        font-family: 'Montserrat', sans-serif;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        padding: 10px 16px;
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        transition: all 0.2s;
-        letter-spacing: 0.2px;
-    }
-
-    .dropdown-button:hover {
-        background-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: white;
-        min-width: 120px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        border-radius: 4px;
-        right: 0;
-    }
-
-    .dropdown-content a {
-        color: #333;
-        font-family: 'Montserrat', sans-serif;
-        font-size: 14px;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        transition: background-color 0.2s;
-    }
-
-    .dropdown-content a:hover {
-        background-color: #f1f1f1;
-    }
-
-    .language-dropdown:hover .dropdown-content {
-        display: block;
-    }
-
-    .arrow-down {
-        width: 0;
-        height: 0;
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-top: 5px solid #333;
-        margin-left: 5px;
-    }
-
-    @media (max-width: 768px) {
-        .site-header {
-            flex-direction: column;
-            padding: 15px 20px;
-        }
-        
-        .nav-buttons {
-            margin-top: 15px;
-            width: 100%;
-            justify-content: center;
-        }
-    }
+  }
 </style>
 </head>
 <body>
-<!-- Header -->
-<header class="site-header">
-    <a href="/" class="logo">Base64Converter.org</a>
-    
-    <div class="nav-buttons">
-        <a href="/about" class="nav-button active">About</a>
-        <a href="/faq" class="nav-button">FAQ</a>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <a href="/" class="logo">
+        <svg class="logo-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 4L3 11L10 14L13 21L20 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Base64Converter.org
+      </a>
+      
+      <button class="mobile-menu-btn" id="mobile-menu-toggle">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 12H21M3 6H21M3 18H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      
+      <nav class="nav" id="nav">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/about" class="nav-link active">About</a>
+        <a href="/faq" class="nav-link">FAQ</a>
         
         <div class="language-dropdown">
-            <button class="dropdown-button">
-                English
-                <div class="arrow-down"></div>
-            </button>
-            <div class="dropdown-content">
-                <a href="#">English</a>
-                <a href="#">Español</a>
-                <a href="#">Français</a>
-                <a href="#">Deutsch</a>
-                <a href="#">中文</a>
-            </div>
+          <button class="dropdown-button">
+            English
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="dropdown-content">
+            <a href="#">English</a>
+            <a href="#">Español</a>
+            <a href="#">Français</a>
+            <a href="#">Deutsch</a>
+            <a href="#">中文</a>
+          </div>
         </div>
+      </nav>
     </div>
-</header>
+  </header>
 
-<div class="container">
-    <div style="text-align: center;">
-        <h1>About Base64Converter.org</h1>
-        <p class="subtitle">Learn more about our service and why we created this tool</p>
-    </div>
+  <div class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+      <h1>About Base64Converter.org</h1>
+      <p>Learn more about our service and why we created this tool</p>
+    </section>
     
     <main>
-        <div class="content-section">
-            <h2>About Our Service</h2>
-            <p>Base64Converter.org is a free and easy-to-use online tool for encoding and decoding Base64 strings. Whether you're a developer, student, or just someone curious about data formats, this tool provides a fast and secure way to convert data to and from Base64—all directly in your browser.</p>
-            
-            <h3>Our Story</h3>
-            <p>Base64Converter.org was born from a simple frustration: too many Base64 tools were either slow, filled with ads, or sent sensitive data to external servers. As a developer working with Base64 encoding in everyday projects—embedding images, handling JSON APIs, and decoding web tokens—I wanted something faster, safer, and cleaner. So I built it.
+      <div class="content-section">
+        <h2>About Our Service</h2>
+        <p>Base64Converter.org is a free and easy-to-use online tool for encoding and decoding Base64 strings. Whether you're a developer, student, or just someone curious about data formats, this tool provides a fast and secure way to convert data to and from Base64—all directly in your browser.</p>
+        
+        <h3>Our Story</h3>
+        <p>Base64Converter.org was born from a simple frustration: too many Base64 tools were either slow, filled with ads, or sent sensitive data to external servers. As a developer working with Base64 encoding in everyday projects—embedding images, handling JSON APIs, and decoding web tokens—I wanted something faster, safer, and cleaner. So I built it.</p>
 
-From the beginning, the goal was to create the fastest, most secure Base64 encoder and decoder available online. One that runs entirely in the browser. One that never sends your data anywhere. One that respects your time and your privacy.
+        <p>From the beginning, the goal was to create the fastest, most secure Base64 encoder and decoder available online. One that runs entirely in the browser. One that never sends your data anywhere. One that respects your time and your privacy.</p>
 
-What started as a weekend side project quickly gained traction as other developers, students, and security-conscious users found it useful. The feedback was clear: people want tools that do one thing, do it well, and don’t spy on them.
+        <p>What started as a weekend side project quickly gained traction as other developers, students, and security-conscious users found it useful. The feedback was clear: people want tools that do one thing, do it well, and don't spy on them.</p>
 
-So I kept improving the site—focusing on performance, clarity, and ease of use. I stripped away everything unnecessary, added instant results with JavaScript, and made sure the tool works flawlessly on both desktop and mobile devices.
+        <p>So I kept improving the site—focusing on performance, clarity, and ease of use. I stripped away everything unnecessary, added instant results with JavaScript, and made sure the tool works flawlessly on both desktop and mobile devices.</p>
 
-Today, Base64Converter.org is trusted by thousands of users each month—from software engineers debugging JWTs, to IT professionals handling email headers, to students learning how Base64 works.
+        <p>Today, Base64Converter.org is trusted by thousands of users each month—from software engineers debugging JWTs, to IT professionals handling email headers, to students learning how Base64 works.</p>
 
-And this is just the beginning.
+        <p>And this is just the beginning.</p>
 
-Whether you're here to decode a Base64-encoded string, encode data for a web project, or simply learn how Base64 works, you're in the right place. This tool will always be free, private, fast, and focused on doing one job extremely well: Base64 conversion.</p>
-            
-            <h3>Why Choose Our Base64 Converter</h3>
-            <p>There are plenty of Base64 tools online—but Base64Converter.org stands out for a few important reasons. Here's why thousands of developers, cybersecurity experts, students, and everyday users choose our converter:<br>     
-<br>
-       ✅ 1. 100% Privacy-Focused
-Your data never leaves your device. All encoding and decoding happens locally in your browser using client-side JavaScript. That means: 
+        <p>Whether you're here to decode a Base64-encoded string, encode data for a web project, or simply learn how Base64 works, you're in the right place. This tool will always be free, private, fast, and focused on doing one job extremely well: Base64 conversion.</p>
+        
+        <h3>Why Choose Our Base64 Converter</h3>
+        <p>There are plenty of Base64 tools online—but Base64Converter.org stands out for a few important reasons. Here's why thousands of developers, cybersecurity experts, students, and everyday users choose our converter:</p>
+        
+        <p><strong>✅ 1. 100% Privacy-Focused</strong><br>
+        Your data never leaves your device. All encoding and decoding happens locally in your browser using client-side JavaScript. That means:</p>
+        <ul class="feature-list">
+          <li>No data is transmitted to any server</li>
+          <li>No logs or storage of your input</li>
+          <li>Perfect for sensitive information like credentials, tokens, or confidential data</li>
+        </ul>
 
-No data is transmitted to any server
+        <p><strong>⚡ 2. Instant Results – No Loading, No Delays</strong><br>
+        Base64Converter.org is blazing fast. Since the entire tool runs in your browser, conversions happen instantly—without any page reloads or network requests. You get results immediately, whether you're on desktop or mobile.</p>
 
-No logs or storage of your input
+        <p><strong>🧼 3. Clean, Ad-Free Interface</strong><br>
+        Unlike other Base64 encoding tools, our site is:</p>
+        <ul class="feature-list">
+          <li>Minimalistic and distraction-free</li>
+          <li>No pop-ups, banners, or trackers</li>
+          <li>Built for speed, not clicks</li>
+        </ul>
 
-Perfect for sensitive information like credentials, tokens, or confidential data<br>
+        <p><strong>📱 4. Mobile-Friendly and Cross-Platform</strong><br>
+        Use it on your phone, tablet, or computer. The converter is fully responsive and works smoothly on all modern browsers and operating systems.</p>
 
-⚡ 2. Instant Results – No Loading, No Delays
-Base64Converter.org is blazing fast. Since the entire tool runs in your browser, conversions happen instantly—without any page reloads or network requests. You get results immediately, whether you’re on desktop or mobile.<br>
+        <p><strong>🧠 5. Built by Developers, for Developers</strong><br>
+        We understand the real-world use cases of Base64—because we use them too. From embedding images to debugging web apps, this tool is designed to fit seamlessly into your workflow.</p>
 
-🧼 3. Clean, Ad-Free Interface
-Unlike other Base64 encoding tools, our site is:
+        <p><strong>🔁 6. Both Encode and Decode</strong><br>
+        Many tools only do one or the other. Base64Converter.org lets you:</p>
+        <ul class="feature-list">
+          <li>Encode text or data to Base64</li>
+          <li>Decode Base64 back to human-readable text</li>
+        </ul>
+        <p>… all from one place, in seconds.</p>
+        
+        <h3>Privacy & Security</h3>
+        <p>At Base64Converter.org, we take privacy and security seriously. Unlike many online Base64 converters that send your data to remote servers for processing, our tool is completely client-side. This means all encoding and decoding happens directly in your web browser using secure JavaScript—your data never leaves your device. Whether you're handling sensitive information like passwords, access tokens, or encoded files, you can trust that everything stays local and private.</p>
 
-Minimalistic and distraction-free
+        <p>Because nothing is transmitted to any server, Base64Converter.org is one of the most secure Base64 encoding and decoding tools available online. We don't track you, store your input, or log your activity in any way. There are no cookies, no third-party analytics, and no embedded trackers—just a clean, fast, and private Base64 converter you can rely on.</p>
 
-No pop-ups, banners, or trackers
+        <p>This privacy-first approach makes our tool ideal for developers, security professionals, and anyone working with confidential data. Thousands of users choose Base64Converter.org every month because they value a safe and trustworthy alternative to noisy, ad-filled websites. Whether you're encoding text for a web project or decoding a Base64 string for debugging, your data remains secure, encrypted by your own device, and never shared with us—or anyone else.</p>
 
-Built for speed, not clicks<br>
+        <p>If you're looking for a fast, reliable, and truly private Base64 converter, you've found it.</p>
+        
+        <h3>Contact Us</h3>
+        <p>Have feedback, questions, or suggestions? We'd love to hear from you.<br>
+        Reach out anytime at <a href="mailto:support@base64converter.org">support@base64converter.org</a>.</p>
 
-📱 4. Mobile-Friendly and Cross-Platform
-Use it on your phone, tablet, or computer. The converter is fully responsive and works smoothly on all modern browsers and operating systems.<br>
-
-🧠 5. Built by Developers, for Developers
-We understand the real-world use cases of Base64—because we use them too. From embedding images to debugging web apps, this tool is designed to fit seamlessly into your workflow.<br>
-
-🔁 6. Both Encode and Decode
-Many tools only do one or the other. Base64Converter.org lets you:
-
-Encode text or data to Base64
-
-Decode Base64 back to human-readable text
-… all from one place, in seconds.</p>
-            
-            <h3>Privacy & Security</h3>
-            <p>At Base64Converter.org, we take privacy and security seriously. Unlike many online Base64 converters that send your data to remote servers for processing, our tool is completely client-side. This means all encoding and decoding happens directly in your web browser using secure JavaScript—your data never leaves your device. Whether you're handling sensitive information like passwords, access tokens, or encoded files, you can trust that everything stays local and private.
-
-Because nothing is transmitted to any server, Base64Converter.org is one of the most secure Base64 encoding and decoding tools available online. We don’t track you, store your input, or log your activity in any way. There are no cookies, no third-party analytics, and no embedded trackers—just a clean, fast, and private Base64 converter you can rely on.
-
-This privacy-first approach makes our tool ideal for developers, security professionals, and anyone working with confidential data. Thousands of users choose Base64Converter.org every month because they value a safe and trustworthy alternative to noisy, ad-filled websites. Whether you're encoding text for a web project or decoding a Base64 string for debugging, your data remains secure, encrypted by your own device, and never shared with us—or anyone else.
-
-If you're looking for a fast, reliable, and truly private Base64 converter, you've found it.</p>
-            
-         
-            
-            <h3>Contact Us</h3>
-            <p>Have feedback, questions, or suggestions? We'd love to hear from you. <br>
-            Reach out anytime at <a href="mailto:support@base64converter.org">support@base64converter.org</a>
-.
-
-Your input helps us make Base64Converter.org the fastest and most reliable Base64 encoder and decoder online.</p>
-        </div>
+        <p>Your input helps us make Base64Converter.org the fastest and most reliable Base64 encoder and decoder online.</p>
+      </div>
     </main>
+  </div>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="/" class="footer-link">Home</a>
+        <a href="/about" class="footer-link">About</a>
+        <a href="/privacy" class="footer-link">Privacy Policy</a>
+        <a href="/terms" class="footer-link">Terms of Service</a>
+      </div>
+      
+      <div class="copyright">
+        &copy; 2025 Base64Converter.org | All rights reserved
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const nav = document.getElementById('nav');
     
-    <footer>
-        <p>© 2025 Ultimate Base64 Tool | All rights reserved</p>
-    </footer>
-</div>
+    mobileMenuToggle.addEventListener('click', () => {
+      nav.classList.toggle('active');
+    });
+  </script>
 </body>
 </html>
